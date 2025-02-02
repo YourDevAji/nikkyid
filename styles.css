@@ -1,0 +1,14 @@
+body{
+    margin: 0px;
+    padding: 0px;
+    margin-top: 80px;
+}
+
+
+/* Mobile View */
+@media (max-width: 800px){
+    body{
+        margin-top: 80px;
+    }
+
+}
