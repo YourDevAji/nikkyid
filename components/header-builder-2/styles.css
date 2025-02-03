@@ -38,6 +38,7 @@
     padding-left: 24px;
     padding-right: 24px;
     padding-top: 8px;
+    gap: 16px;
     padding-bottom: 8px;
     justify-content: space-between;
     align-items: center;
@@ -46,6 +47,7 @@
 .wide-main-header-left{
     display: flex;
     gap: 16px;
+    flex: 1;
     align-items: center;
 
 }
@@ -88,9 +90,107 @@
     display: none;
 }
 
+.wide-view-header-center{
+    flex: 1;
+    display: flex;
+}
+
+.wide-view-search-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background-color: #F5F5F5;
+    padding: 8px 16px;
+    border-radius: 20px;
+    overflow: hidden;
+    width: 100px; /* Initial collapsed width */
+    max-width: 100px; /* Initial constraint */
+    transition: max-width 0.3s ease-in-out, width 0.3s ease-in-out;
+}
+
+#wide-view-search-icon{
+    display: none;
+    visibility: hidden;
+}
+
+.wide-view-search-container:focus-within {
+    max-width: 250px; /* Expand smoothly */
+    width: 100%; /* Allow it to take available space */
+}
+
+#wide-view-search {
+    flex: 1;
+    min-width: 0;
+    border: none;
+    background-color: transparent;
+    outline: none;
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+.search-icon {
+    transition: opacity 0.3s ease-in-out;
+}
+
+.clear-icon {
+    display: none;
+    cursor: pointer;
+}
+
+.cart-container {
+    position: relative;
+    display: inline-block;
+}
+
+.cart-icon {
+    width: 24px;
+    height: 24px;
+}
+
+.cart-bubble {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background-color: black;
+    color: white;
+    font-size: 11px;
+    font-weight: bold;
+    min-width: 18px;
+    aspect-ratio: 1/1;
+    padding: 1.5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    visibility: hidden;
+}
+
+/* Show the bubble only when there are items in the cart */
+.cart-container.has-items .cart-bubble {
+    visibility: visible;
+}
+
+
+
+.wide-view-search-container.has-text .clear-icon {
+    display: block;
+}
+
 .wide-turn-side-nav{
     display: flex;
     gap: 16px;
+    flex: 1;
+    justify-content: end;
     align-items: center;
     align-content: center;
 }
@@ -202,6 +302,17 @@
 
     .web-menu-nav{
         height: 24px;
+    }
+
+
+    .wide-view-search-container {
+        display: none;
+        visibility: hidden;
+    }
+
+    #wide-view-search-icon{
+        display: flex;
+        visibility: visible;
     }
 
 }

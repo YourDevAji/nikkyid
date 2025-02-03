@@ -4,6 +4,10 @@ body{
     margin-top: 80px;
 }
 
+input:focus {
+    outline: none;
+    border: none;
+}
 
 /* Mobile View */
 @media (max-width: 800px){

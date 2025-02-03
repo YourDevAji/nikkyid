@@ -3,11 +3,13 @@ const authState = new HtmlState(
     {
         isAuthenticated: false,
         user: null,
+        siteName: "NikkyId Stores",
         tabs: [
             {name: "New Arrivals",link:"#"},
             {name: "Best Selling",link:"#"},
             {name: "Top Deal",link:"#"},
-        ]
+        ],
+        cart:['']
     },
     {
         persist: true,

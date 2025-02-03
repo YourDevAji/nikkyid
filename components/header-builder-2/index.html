@@ -16,7 +16,7 @@
                 </label>
             </li>
 
-                {{#tabs}}
+            {{#tabs}}
             <li class="side-menu-nav">
                 <a class="side-menu-link" href="{{link}}">
                     {{name}}
@@ -75,16 +75,52 @@
 
             <div class="wide-main-header-center">
                 <h1 class="wide-view-site-text">
-                    NIKKYID STORES
+                    {{siteName}}
                 </h1>
             </div>
 
             <div class="wide-turn-side-nav">
-                <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" role="img"
-                     width="24px" height="24px" fill="none">
-                    <path stroke="currentColor" stroke-width="1.5"
-                          d="M8.25 8.25V6a2.25 2.25 0 012.25-2.25h3a2.25 2.25 0 110 4.5H3.75v8.25a3.75 3.75 0 003.75 3.75h9a3.75 3.75 0 003.75-3.75V8.25H17.5"></path>
+
+
+                <div class="wide-view-search-container">
+                    <svg aria-hidden="true" class="search-icon" fill="none"
+                         focusable="false" height="24px"
+                         role="img" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"
+                         width="24px">
+                        <path d="M13.962 16.296a6.716 6.716 0 01-3.462.954 6.728 6.728 0 01-4.773-1.977A6.728 6.728 0 013.75 10.5c0-1.864.755-3.551 1.977-4.773A6.728 6.728 0 0110.5 3.75c1.864 0 3.551.755 4.773 1.977A6.728 6.728 0 0117.25 10.5a6.726 6.726 0 01-.921 3.407c-.517.882-.434 1.988.289 2.711l3.853 3.853" stroke="currentColor"
+                              stroke-width="1.5"></path>
+                    </svg>
+
+                    <label class="sr-only" for="wide-view-search">Search</label>
+                    <input aria-label="Search" id="wide-view-search" placeholder="Search"
+                           type="text">
+
+                    <svg aria-hidden="true" class="clear-icon" fill="none" focusable="false"
+                         height="24px" id="clear-icon"
+                         role="img" viewBox="0 0 24 24" width="24px">
+                        <path d="M18.973 5.027L5.028 18.972m0-13.945l13.944 13.945" stroke="currentColor"
+                              stroke-width="1.5"></path>
+                    </svg>
+                </div>
+
+
+                <svg aria-hidden="true" fill="none" focusable="false"
+                     height="24px" id="wide-view-search-icon"
+                     role="img" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"
+                     width="24px">
+                    <path d="M13.962 16.296a6.716 6.716 0 01-3.462.954 6.728 6.728 0 01-4.773-1.977A6.728 6.728 0 013.75 10.5c0-1.864.755-3.551 1.977-4.773A6.728 6.728 0 0110.5 3.75c1.864 0 3.551.755 4.773 1.977A6.728 6.728 0 0117.25 10.5a6.726 6.726 0 01-.921 3.407c-.517.882-.434 1.988.289 2.711l3.853 3.853" stroke="currentColor"
+                          stroke-width="1.5"></path>
                 </svg>
+
+                <div class="cart-container">
+                    <svg aria-hidden="true" class="cart-icon" fill="none" focusable="false"
+                         height="24px"
+                         role="img" viewBox="0 0 24 24" width="24px">
+                        <path d="M8.25 8.25V6a2.25 2.25 0 012.25-2.25h3a2.25 2.25 0 110 4.5H3.75v8.25a3.75 3.75 0 003.75 3.75h9a3.75 3.75 0 003.75-3.75V8.25H17.5" stroke="currentColor"
+                              stroke-width="1.5"></path>
+                    </svg>
+                    <span class="cart-bubble" id="cart-bubble">0</span>
+                </div>
 
                 <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" role="img"
                      width="24px" height="24px" fill="none">
