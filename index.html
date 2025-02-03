@@ -23,17 +23,21 @@
           rel="stylesheet">
 
 
+
     <!--    Delivers-->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="https://cdn.jsdelivr.net/npm/html-widget@7.0.0"></script>
-    <script src="https://cdn.jsdelivr.net/npm/html-state@2.0.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/html-state@3.0.0"></script>
+
 
     <!--    States-->
     <script src="/states/authentication-state.js" type="module" defer></script>
+    <script defer src="/states/product-showcase-state.js" type="module"></script>
 
 
     <!--    Components-->
     <script src="/components/header-builder-2/script.js" type="module" defer></script>
+    <script defer src="/components/product-showcase-builder/script.js" type="module"></script>
 
 </head>
 
@@ -41,6 +45,10 @@
 
 <!--Website Header-->
 <div id="header-id"></div>
+
+<!--Website Product Showcase-->
+<div id="product-showcase-id"></div>
+
 
 </body>
 

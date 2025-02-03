@@ -1,0 +1,38 @@
+<div class="swiper-container">
+
+    <div class="swiper-wrapper">
+        {{#products}}
+        <div class="swiper-slide" data-swiper-active="{{active}}">
+            <img alt="{{altText}}" src="{{imageUrl}}">
+            <div class="slide-content">
+                <h2>{{title}}</h2>
+                <p>{{description}}</p>
+                <button class="buy-now">{{buttonText}}</button>
+            </div>
+        </div>
+        {{/products}}
+    </div>
+
+    <div class="swiper-button-next">
+        <svg fill="none" height="18" viewBox="0 0 14 18" width="14"
+             xmlns="http://www.w3.org/2000/svg">
+            <path d="M5.21291 17.2568L13.1085 10.7642C13.3911 10.5323 13.6153 10.2568 13.7683 9.95356C13.9213 9.65031 14 9.32522 14 8.99691C14 8.6686 13.9213 8.34351 13.7683 8.04026C13.6153 7.737 13.3911 7.46153 13.1085 7.22962L5.21291 0.737026C3.29236 -0.842253 0 0.285803 0 2.51685L0 15.502C0 17.7331 3.29236 18.8361 5.21291 17.2568Z"
+                  fill="white"/>
+        </svg>
+    </div>
+    <div class="swiper-button-prev">
+        <svg fill="none" height="18" viewBox="0 0 14 18" width="14"
+             xmlns="http://www.w3.org/2000/svg">
+            <path d="M8.78709 0.743207L0.891512 7.2358C0.608907 7.46771 0.384698 7.74318 0.23172 8.04644C0.078743 8.34969 0 8.67478 0 9.00309C0 9.3314 0.078743 9.65649 0.23172 9.95974C0.384698 10.263 0.608907 10.5385 0.891512 10.7704L8.78709 17.263C10.7076 18.8423 14 17.7142 14 15.4832V2.49796C14 0.266916 10.7076 -0.836073 8.78709 0.743207Z"
+                  fill="white"/>
+        </svg>
+    </div>
+
+    <div class="swiper-pagination">
+        {{#products}}
+        <div class="swiper-dot" data-event="handleDotClick" data-index="{{index}}"
+             data-swiper-dot-active="{{active}}"></div>
+        {{/products}}
+    </div>
+
+</div>

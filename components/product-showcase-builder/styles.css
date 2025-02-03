@@ -1,0 +1,146 @@
+.swiper-container {
+    width: 100%;
+    height: 500px;
+    display: flex;
+    position: relative;
+    overflow: hidden;
+
+}
+
+.swiper-wrapper {
+    display: flex;
+    width: 100%;
+    transition: transform 0.5s ease-in-out;
+}
+
+.swiper-slide {
+    flex: 0 0 100%;
+    transition: opacity 0.5s ease-in-out;
+}
+
+.swiper-slide[data-swiper-active="true"] {
+
+}
+
+.swiper-slide img {
+    width: 100%;
+    height: 100%;
+    inset: 0;
+    object-fit: cover;
+}
+
+.swiper-button-prev{
+    width: 50px;
+    height: 50px;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 0px;
+    z-index: 2;
+    cursor: pointer;
+    border-radius: 50px;
+    background-color: #00000066;
+    margin-left: 24px;
+    display: flex;
+    align-items:center;
+    justify-content: center;
+}
+
+.swiper-button-next{
+    width: 50px;
+    height: 50px;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 0px;
+    z-index: 2;
+    cursor: pointer;
+    border-radius: 50px;
+    background-color: #00000066;
+    margin-right: 24px;
+    display: flex;
+    align-items:center;
+    justify-content: center;
+}
+
+.slide-content {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    bottom: 50%;
+    transform: translateY(50%);
+    color: white;
+    text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.8);
+    max-width: 70vh;
+    width: 100%;
+    padding-left: 98px;
+    padding-right: 98px;
+    box-sizing: border-box;
+}
+
+.buy-now {
+    background-color: #ffc107;
+    border: none;
+    max-width: 150px;
+    padding: 10px 20px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.swiper-pagination{
+    position: absolute;
+    z-index: 2;
+    cursor: pointer;
+    bottom: 16px;
+    left: 50%;
+    transform: translateX(-50%)
+}
+
+.swiper-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: gray;
+    display: inline-block;
+    margin: 5px;
+    cursor: pointer;
+}
+
+
+.swiper-dot[data-swiper-dot-active="true"] {
+    background: white;
+}
+
+
+/* Tab */
+@media (max-width: 800px) {
+
+    .swiper-container {
+        height: 40vh;
+    }
+
+    .slide-content {
+        max-width: 100%;
+        padding-left: 98px;
+        padding-right: 98px;
+
+    }
+}
+
+/* Mobile */
+@media (max-width: 635px) {
+
+    .swiper-button-next,
+    .swiper-button-prev {
+        display: none;
+    }
+
+    .slide-content {
+        max-width: 100%;
+        overflow: hidden;
+        box-sizing: border-box;
+        padding-left: 24px;
+        padding-right: 24px;
+        padding-bottom: 32px;
+    }
+}
