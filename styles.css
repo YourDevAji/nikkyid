@@ -1,7 +1,7 @@
 body{
     margin: 0px;
     padding: 0px;
-    margin-top: 133px;
+    margin-top: 56px;
 }
 
 input:focus {
@@ -12,7 +12,7 @@ input:focus {
 /* Mobile View */
 @media (max-width: 800px){
     body{
-        margin-top: 75px;
+        margin-top: 0px;
     }
 
 }

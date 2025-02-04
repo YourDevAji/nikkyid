@@ -40,66 +40,140 @@ productShowcaseState.subscribe((state) => {
 
 await onCreate(productShowcaseState.value);
 
-
 let autoScrollTimer;
-const autoScrollInterval = 5000; // Time interval for auto-scroll (in milliseconds)
+const autoScrollInterval = 5000; // Auto-scroll interval in milliseconds
 
 // Draggable Gestures
-let touchStartX = 0, touchMoveX = 0, touchEndX = 0, isDragging = false;
-const threshold = window.innerWidth * 0.4; // 40% screen width
+let touchStartX = 0, touchMoveX = 0, isDragging = false;
+const threshold = window.innerWidth * 0.4; // 40% of screen width
+
 const swipeContainer = document.querySelector(".swiper-container");
 const wrapper = document.querySelector(".swiper-wrapper");
 const slides = document.querySelectorAll(".swiper-slide");
 
-// Event listener for touch and pointer events
-swipeContainer.addEventListener("touchstart", handleTouchStart);
-swipeContainer.addEventListener("touchmove", handleTouchMove);
-swipeContainer.addEventListener("touchend", handleTouchEnd);
-swipeContainer.addEventListener("pointerdown", handleTouchStart);
-swipeContainer.addEventListener("pointermove", handleTouchMove);
-swipeContainer.addEventListener("pointerup", handleTouchEnd);
+const nextButton = document.querySelector(".swiper-button-next");
+const prevButton = document.querySelector(".swiper-button-prev");
 
+if (!swipeContainer || !wrapper || !slides.length) {
+    console.error("Swiper elements not found.");
+} else {
+    // Attach event listeners if elements exist
+    swipeContainer.addEventListener("touchstart", handleTouchStart);
+    swipeContainer.addEventListener("touchmove", handleTouchMove, { passive: false });
+    swipeContainer.addEventListener("touchend", handleTouchEnd);
+    swipeContainer.addEventListener("pointerdown", handleTouchStart);
+    swipeContainer.addEventListener("pointermove", handleTouchMove);
+    swipeContainer.addEventListener("pointerup", handleTouchEnd);
 
-// Event Listeners for Buttons
-document.querySelector(".swiper-button-next").addEventListener("click", () => navigateSlide(1));
-document.querySelector(".swiper-button-prev").addEventListener("click", () => navigateSlide(-1));
+    nextButton?.addEventListener("click", () => navigateSlide(1));
+    prevButton?.addEventListener("click", () => navigateSlide(-1));
 
-// Start auto-scrolling
+    startAutoScroll(); // Start auto-scroll on load
+}
+
+// Start Auto-Scroll
 function startAutoScroll() {
     stopAutoScroll();
-    autoScrollTimer = setInterval(() => {
-        navigateSlide(1); // Move to next slide automatically
-    }, autoScrollInterval);
+    autoScrollTimer = setInterval(() => navigateSlide(1), autoScrollInterval);
 }
 
-// Stop auto-scrolling
+// Stop Auto-Scroll
 function stopAutoScroll() {
-    if(autoScrollTimer){clearInterval(autoScrollTimer);}
+    clearInterval(autoScrollTimer);
 }
 
-// Handle touch/drag interaction (pause auto-scroll)
+// User interaction handlers (pause & resume auto-scroll)
 function handleUserInteraction() {
     stopAutoScroll();
 }
-
-// Handle interaction end (resume auto-scroll)
 function handleUserInteractionEnd() {
     startAutoScroll();
 }
 
-// Event listener for user interactions (to pause auto-scroll)
-swipeContainer.addEventListener("touchstart", handleUserInteraction);
-swipeContainer.addEventListener("pointerdown", handleUserInteraction);
-document.querySelector(".swiper-button-next").addEventListener("click", handleUserInteraction);
-document.querySelector(".swiper-button-prev").addEventListener("click", handleUserInteraction);
+// Attach user interaction listeners
+[nextButton, prevButton, swipeContainer].forEach((el) => {
+    el?.addEventListener("touchstart", handleUserInteraction);
+    el?.addEventListener("pointerdown", handleUserInteraction);
+    el?.addEventListener("touchend", handleUserInteractionEnd);
+    el?.addEventListener("pointerup", handleUserInteractionEnd);
+});
 
-// Event listener to resume auto-scroll after user interaction ends
-swipeContainer.addEventListener("touchend", handleUserInteractionEnd);
-swipeContainer.addEventListener("pointerup", handleUserInteractionEnd);
-document.querySelector(".swiper-button-next").addEventListener("click", handleUserInteractionEnd);
-document.querySelector(".swiper-button-prev").addEventListener("click", handleUserInteractionEnd);
+// Handle Drag Start
+function handleTouchStart(e) {
+    touchStartX = e.touches?.[0]?.clientX
+    //    || e.clientX
+    ;
+    isDragging = true;
+    wrapper.style.transition = "none"; // Disable smooth transition
+    stopAutoScroll(); // Pause auto-scroll during drag
+}
 
+// Handle Drag Move
+function handleTouchMove(e) {
+    if (!isDragging) return;
+    e.preventDefault(); // Prevent unwanted scrolling
 
+    touchMoveX = e.touches?.[0]?.clientX || e.clientX;
+    let deltaX = touchMoveX - touchStartX;
+    const activeIndex = productShowcaseState.value.products.findIndex(p => p.active) || 0;
+
+    // Slow down overscroll at the edges
+    if ((activeIndex === 0 && deltaX > 0) || (activeIndex === slides.length - 1 && deltaX < 0)) {
+        deltaX *= 0.3;
+    }
+
+    // Apply drag movement
+    wrapper.style.transform = `translateX(calc(${-activeIndex * 100}% + ${deltaX}px))`;
+}
+
+// Handle Drag End
+function handleTouchEnd(e) {
+    if (!isDragging) return;
+    isDragging = false;
+
+    let touchEndX = e.changedTouches?.[0]?.clientX || e.clientX;
+    let deltaX = touchEndX - touchStartX;
+    let activeIndex = productShowcaseState.value.products.findIndex(p => p.active) || 0;
+
+    wrapper.style.transition = "transform 0.3s ease-out"; // Restore transition
+
+    // Determine slide navigation based on threshold
+    if (Math.abs(deltaX) > threshold) {
+        if (deltaX < 0 && activeIndex < slides.length - 1) {
+            navigateSlide(1);
+        } else if (deltaX > 0 && activeIndex > 0) {
+            navigateSlide(-1);
+        }
+    } else {
+        updateSlidePosition(); // Reset to active slide
+    }
+
+    startAutoScroll(); // Resume auto-scroll
+}
+
+// Update Slide Position
+function updateSlidePosition() {
+    const activeIndex = productShowcaseState.value.products.findIndex(p => p.active) || 0;
+    document.querySelectorAll(".swiper-dot").forEach((dot, index) => {
+        dot.setAttribute("data-swiper-dot-active", index === activeIndex ? "true" : "false");
+    });
+    wrapper.style.transform = `translateX(-${activeIndex * 100}%)`;
+}
+
+// Navigate Slides
+function navigateSlide(direction) {
+    let prevState = productShowcaseState.value;
+    let activeIndex = prevState.products.findIndex(p => p.active);
+    let nextIndex = (activeIndex + direction + prevState.products.length) % prevState.products.length;
+
+    let updatedProducts = prevState.products.map((p, i) => ({
+        ...p,
+        active: i === nextIndex
+    }));
+
+    productShowcaseState.update({ products: updatedProducts }, false);
+    updateSlidePosition();
+}
 
 
 productShowcaseDOM.handleDotClick = function (event) {
@@ -120,8 +194,6 @@ productShowcaseDOM.handleDotClick = function (event) {
     startAutoScroll(); // Resume auto-scroll after the click
 };
 
-
-
 document.body.addEventListener("click", (event) => {
     const target = event.target.closest("[data-event]");
     if (target) {
@@ -133,103 +205,9 @@ document.body.addEventListener("click", (event) => {
 });
 
 
-function updateSlidePosition() {
-    const slides = document.querySelectorAll(".swiper-slide");
-    const dots = document.querySelectorAll(".swiper-dot");
-
-    const activeIndex = productShowcaseState.value.products.findIndex(p => p.active);
-
-
-    dots.forEach((dot, index) => {
-        dot.setAttribute("data-swiper-dot-active", index === activeIndex ? "true" : "false");
-    });
-
-    const wrapper = document.querySelector(".swiper-wrapper");
-    wrapper.style.transform = `translateX(-${activeIndex * 100}%)`;
-}
-
-
-function navigateSlide(direction) {
-    let prevState = productShowcaseState.value;
-    let activeIndex = prevState.products.findIndex(p => p.active);
-    let nextIndex = (activeIndex + direction + prevState.products.length) % prevState.products.length;
-
-    let updatedProducts = prevState.products.map((p, i) => ({
-        ...p,
-        active: i === nextIndex
-    }));
-
-    productShowcaseState.update({ products: updatedProducts }, false);
-    updateSlidePosition();
-
-}
-
-
-
-
-// Handle touch start or pointer down
-function handleTouchStart(e) {
-    touchStartX = e.touches ? e.touches[0].clientX : e.clientX;
-    isDragging = true;
-    wrapper.style.transition = "none"; // Disable smooth transition while dragging
-    stopAutoScroll(); // Pause auto-scroll during drag
-}
-
-// Handle touch move or pointer move
-function handleTouchMove(e) {
-    if (!isDragging) return;
-
-    touchMoveX = e.touches ? e.touches[0].clientX : e.clientX;
-    let deltaX = touchMoveX - touchStartX;
-    const activeIndex = productShowcaseState?.value?.products?.findIndex(p => p.active) ?? 0;
-
-    // Prevent overscrolling: slow down at the ends
-    if ((activeIndex === 0 && deltaX > 0) || (activeIndex === slides.length - 1 && deltaX < 0)) {
-        deltaX *= 0.3; // Slow down the overscroll effect
-    }
-
-    // Move slides while dragging
-    wrapper.style.transform = `translateX(calc(${-activeIndex * 100}% + ${deltaX}px))`;
-}
-
-// Handle touch end or pointer up
-function handleTouchEnd(e) {
-    if (!isDragging) return;
-    isDragging = false;
-
-    touchEndX = e.changedTouches?.[0]?.clientX || e.clientX;
-    const deltaX = touchEndX - touchStartX;
-    const activeIndex = productShowcaseState?.value?.products?.findIndex(p => p.active) ?? 0;
-
-    wrapper.style.transition = "transform 0.3s ease-out"; // Smooth transition back to position
-
-    // Check if the drag exceeds the threshold
-    if (Math.abs(deltaX) > threshold) {
-        if (deltaX < 0 && activeIndex < slides.length - 1) {
-            navigateSlide(1); // Move to next slide
-        } else if (deltaX > 0 && activeIndex > 0) {
-            navigateSlide(-1); // Move to previous slide
-        }
-    } else {
-        updateSlidePosition(); // Reset if not enough drag
-    }
-
-    // Prevent being stuck if overscrolled: Reset position if still at the end
-    if (activeIndex === 0 || activeIndex === slides.length - 1) {
-        updateSlidePosition(); // Reset to current active slide
-    }
-    startAutoScroll(); // Resume auto-scroll after drag ends
-
-}
-
-
-
-
-// Initialize slides
-//updateSlidePosition();
-
 // Start auto-scrolling when the page loads
 startAutoScroll();
+
 
 
 

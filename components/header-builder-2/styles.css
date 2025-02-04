@@ -1,33 +1,39 @@
 /*Base Style*/
 .header-nav{
+    width: 100%;
+    display: flex;
+    flex-direction: column
+}
+
+.web-nav{
     z-index: 1000;
     position: fixed;
     top:0px;
     left:0px;
     right:0px;
-    width: 100%;
-
+    padding-top: 8px;
+    padding-bottom: 8px;
     background-color: white;
-}
-.web-nav{
-
-align-items: center;
+    align-items: center;
     width: 100%;
-/*   border-bottom: 1px solid #2a2a2a;*/
+    border-bottom: 0.5px solid #B6570B;
 }
 
 .wide-view-nav{
-  display: flex;
-  background-color: #B6570B;
-  gap: 24px;
+    display: flex;
+    background-color: #B6570B;
+    gap: 18px;
+    padding-left: 24px;
+    padding-right: 24px;
+
 }
 
 .wide-view-item{
     list-style:none;
     display:flex;
     width:auto;
-    height: 50px;
-    margin-left: 24px;
+    padding-top: 8px;
+    padding-bottom: 8px;
     justify-content: flex-end;
     align-items: center;
 }
@@ -43,9 +49,7 @@ align-items: center;
     display:flex;
     padding-left: 24px;
     padding-right: 24px;
-    padding-top: 8px;
     gap: 16px;
-    padding-bottom: 8px;
     justify-content: space-between;
     align-items: center;
 }
@@ -60,10 +64,10 @@ align-items: center;
 
 .wide-view-site-text{
     color: #B6570B;
+    margin: 0px;
 }
 
 .wide-main-item{
-    height: 50px;
     padding: 0px;
     display: flex;
     align-items: center;
@@ -76,6 +80,7 @@ align-items: center;
     font-family: Anton, Arial;
     letter-spacing: 8px;
     font-weight: bold;
+    display: flex;
     align-items: center;
     text-decoration: none;
 }
@@ -268,18 +273,12 @@ align-items: center;
     z-index: 998;
 }
 
-/* Web View*/
-@media (min-width: 800px) and (max-width: 1920px){
-
-
-
-}
-
-
-
 /* Mobile View */
 @media (max-width: 800px){
 
+    .web-nav{
+        position: sticky;
+    }
 
     .wide-main-header-nav{
         padding-left: 12px;
@@ -300,7 +299,7 @@ align-items: center;
         visibility: visible;
     }
 
-        .wide-main-header-center{
+    .wide-main-header-center{
         display: none;
         visibility: hidden;
     }

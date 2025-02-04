@@ -3,7 +3,8 @@ const authState = new HtmlState(
     {
         isAuthenticated: false,
         user: null,
-        siteName: "NikkyId Stores",
+        //        siteName: "NikkyId Stores",
+        siteName: "",
         tabs: [
             {name: "New Arrivals",link:"#"},
             {name: "Best Selling",link:"#"},
