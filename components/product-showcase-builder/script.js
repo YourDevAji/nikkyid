@@ -178,7 +178,6 @@ function handleTouchMove(e) {
     // Lock swipe direction after slight movement (threshold of 10px)
     if (isHorizontal === null) {
         if (Math.abs(deltaX) > 10 || Math.abs(deltaY) > 10) {
-//            isHorizontal = (Math.abs(deltaX) > Math.abs(deltaY)) > dominanceRatio; // Lock direction
             isHorizontal = (Math.abs(deltaX) / Math.abs(deltaY)) > dominanceRatio;
         }
     }
@@ -228,23 +227,24 @@ function handleTouchEnd(e) {
             navigateSlide(-1);
         }
     } else {
-        updateSlidePosition();
+        updateSlidePosition(true);
     }
 
     startAutoScroll();
 }
 
 // Update Slide Position
-function updateSlidePosition() {
+function updateSlidePosition(autoScrolled = false) {
     const activeIndex = productShowcaseState.value.products.findIndex(p => p.active) || 0;
     document.querySelectorAll(".swiper-dot").forEach((dot, index) => {
         dot.setAttribute("data-swiper-dot-active", index === activeIndex ? "true" : "false");
     });
+    if(autoScrolled)wrapper.style.transition = "transform 0.3s ease-out";
     wrapper.style.transform = `translateX(-${activeIndex * 100}%)`;
 }
 
 // Navigate Slides
-function navigateSlide(direction) {
+function navigateSlide(direction,autoScrolled = false) {
     let prevState = productShowcaseState.value;
     let activeIndex = prevState.products.findIndex(p => p.active);
     let nextIndex = (activeIndex + direction + prevState.products.length) % prevState.products.length;
@@ -255,7 +255,7 @@ function navigateSlide(direction) {
     }));
 
     productShowcaseState.update({ products: updatedProducts }, false);
-    updateSlidePosition();
+    updateSlidePosition(autoScrolled);
 }
 
 
@@ -273,7 +273,7 @@ productShowcaseDOM.handleDotClick = function (event) {
     }));
 
     productShowcaseState.update({ products: updatedProducts }, false);
-    updateSlidePosition();
+    updateSlidePosition(true);
     startAutoScroll(); // Resume auto-scroll after the click
 };
 
