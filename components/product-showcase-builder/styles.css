@@ -5,11 +5,11 @@
     position: relative;
     overflow: hidden;
     margin-bottom: 1000px;
-    touch-action: pan-y; /* Allow vertical scrolling by default */
+    touch-action: pan-y;
 }
 
 .swiper-container.dragging {
-    touch-action: none; /* Disable all touch actions while dragging */
+    touch-action: none;
 }
 
 .swiper-wrapper {
@@ -36,10 +36,36 @@
 
 .swiper-slide img {
     width: 100%;
+    position: absolute;
     height: 100%;
-    inset: 0;
     object-fit: cover;
 }
+
+
+.slide-img-overlay {
+    position: absolute;
+    width: 100%;
+    z-index: 3;
+    display: flex;
+    height: 100%;
+}
+
+.slide-content {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    bottom: 50%;
+    transform: translateY(50%);
+    color: white;
+    z-index: 4;
+    text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.8);
+    max-width: 70vh;
+    width: 100%;
+    padding-left: 98px;
+    padding-right: 98px;
+    box-sizing: border-box;
+}
+
 
 .swiper-button-prev{
     width: 50px;
@@ -75,29 +101,6 @@
     justify-content: center;
 }
 
-.slide-content {
-    position: absolute;
-    display: flex;
-    flex-direction: column;
-    bottom: 50%;
-    transform: translateY(50%);
-    color: white;
-    text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.8);
-    max-width: 70vh;
-    width: 100%;
-    padding-left: 98px;
-    padding-right: 98px;
-    box-sizing: border-box;
-}
-
-.buy-now {
-    background-color: #ffc107;
-    border: none;
-    max-width: 150px;
-    padding: 10px 20px;
-    font-weight: bold;
-    cursor: pointer;
-}
 
 .swiper-pagination{
     position: absolute;
@@ -121,6 +124,15 @@
 
 .swiper-dot[data-swiper-dot-active="true"] {
     background: white;
+}
+
+.buy-now {
+    background-color: #ffc107;
+    border: none;
+    max-width: 150px;
+    padding: 10px 20px;
+    font-weight: bold;
+    cursor: pointer;
 }
 
 

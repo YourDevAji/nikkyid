@@ -28,19 +28,35 @@ async function onCreate(state) {
     }
 }
 
+
+await onCreate(productShowcaseState.value);
+
+let autoScrolling = productShowcaseState.value.canAutoScrollInterval;
+let autoScrollInterval = productShowcaseState.value.autoScrollInterval; // Auto-scroll interval in milliseconds
+
 // Subscribe to product showcase state
 productShowcaseState.subscribe((state) => {
     if(productShowcaseDOM){
         productShowcaseDOM.update(state);
     }
+
+    //  Settings
+    //  Auto Scroll Interval
+    if(state.autoScrollInterval  != autoScrollInterval){
+        stopAutoScroll();
+        autoScrollInterval = state.autoScrollInterval;
+        startAutoScroll();
+    }
+    //    Auto Scroll Enabled
+    if(state.canAutoScrollInterval != autoScrolling){
+        autoScrolling = state.canAutoScrollInterval;
+        startAutoScroll();
+    }
+
 });
 
 
-
-await onCreate(productShowcaseState.value);
-
 let autoScrollTimer;
-const autoScrollInterval = 5000; // Auto-scroll interval in milliseconds
 
 // Draggable Gestures
 let isDragging = false, startX = 0, startY = 0, deltaX = 0, deltaY = 0, isHorizontal = false;
@@ -61,9 +77,9 @@ if (!swipeContainer || !wrapper || !slides.length) {
     swipeContainer.addEventListener("touchstart", handleTouchStart);
     swipeContainer.addEventListener("touchmove", handleTouchMove, { passive: false });
     swipeContainer.addEventListener("touchend", handleTouchEnd);
-    //    window.addEventListener("mousedown", handleTouchStart);
-    //    window.addEventListener("mousemove", handleTouchMove);
-    //    window.addEventListener("mouseup", handleTouchEnd);
+    wrapper.addEventListener("mousedown", handleTouchStart);
+    wrapper.addEventListener("mousemove", handleTouchMove);
+    wrapper.addEventListener("mouseup", handleTouchEnd);
 
     nextButton?.addEventListener("click", () => navigateSlide(1));
     prevButton?.addEventListener("click", () => navigateSlide(-1));
@@ -73,8 +89,9 @@ if (!swipeContainer || !wrapper || !slides.length) {
 
 // Start Auto-Scroll
 function startAutoScroll() {
+    if(!autoScrolling)return;
     stopAutoScroll();
-    //    autoScrollTimer = setInterval(() => navigateSlide(1), autoScrollInterval);
+    autoScrollTimer = setInterval(() => navigateSlide(1), autoScrollInterval);
 }
 
 // Stop Auto-Scroll
@@ -124,8 +141,8 @@ function handleTouchStart(e) {
 
 // Handle Drag Move
 function handleTouchMove(e) {
-    console.log(e);
-    if (!isDragging) return;
+
+    if (!isDragging && e.type === "mousemove") return;
 
     let currentX, currentY;
     if (isTouch) {
@@ -140,17 +157,28 @@ function handleTouchMove(e) {
     deltaY = currentY - startY;
 
 
-    if (!isHorizontal) {
-        isHorizontal = Math.abs(deltaX) > Math.abs(deltaY);
-    }
+    //    if (!isHorizontal) {
+    //        isHorizontal = Math.abs(deltaX) > Math.abs(deltaY);
+    //    }
+    //
+    //    // If the gesture is vertical, ignore horizontal swiping
+    //    if (!isHorizontal) {
+    //        return;
+    //    }
 
-    // If the gesture is vertical, ignore horizontal swiping
-    if (!isHorizontal) {
+    // Determine swipe direction (horizontal or vertical)
+    if (!isHorizontal && Math.abs(deltaX) > Math.abs(deltaY)) {
+        isHorizontal = true;  // Lock to horizontal swipe
+    }
+    if (!isHorizontal && Math.abs(deltaY) > Math.abs(deltaX)) {
+        // If vertical swipe is detected, cancel dragging
+        isDragging = false;   // Stop the dragging state
+        swipeContainer.classList.remove("dragging");
         return;
     }
 
     if (isHorizontal && e.cancelable) {
-        e.preventDefault(); // Prevent vertical scroll while swiping
+        e.preventDefault(); // Prevent vertical scroll while swiping horizontally
     }
 
     // Slow down overscroll at edges

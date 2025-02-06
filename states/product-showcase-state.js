@@ -1,6 +1,8 @@
 const productShowcaseState = new HtmlState(
 
     {
+        canAutoScrollInterval : true,
+        autoScrollInterval : 5000,
         products: [
             {
                 imageUrl: "/images/slide4.webp",
