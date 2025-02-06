@@ -140,6 +140,19 @@ function handleTouchStart(e) {
     wrapper.style.transition = "none";
 }
 
+// Get Dominance Ratio Threshold Based on Device
+function getDominanceRatioThreshold() {
+    const screenWidth = window.innerWidth;
+
+    if (screenWidth <= 480) {
+        return 1.2; // Mobile (high sensitivity)
+    } else if (screenWidth <= 1024) {
+        return 1.5; // Tablet (moderate sensitivity)
+    } else {
+        return 2.0; // Desktop (low sensitivity)
+    }
+}
+
 // Handle Drag Move
 function handleTouchMove(e) {
 
@@ -159,11 +172,14 @@ function handleTouchMove(e) {
     deltaX = currentX - startX;
     deltaY = currentY - startY;
 
+    const dominanceRatio = getDominanceRatioThreshold();
+
 
     // Lock swipe direction after slight movement (threshold of 10px)
     if (isHorizontal === null) {
         if (Math.abs(deltaX) > 10 || Math.abs(deltaY) > 10) {
-            isHorizontal = Math.abs(deltaX) > Math.abs(deltaY); // Lock direction
+//            isHorizontal = (Math.abs(deltaX) > Math.abs(deltaY)) > dominanceRatio; // Lock direction
+            isHorizontal = (Math.abs(deltaX) / Math.abs(deltaY)) > dominanceRatio;
         }
     }
 
