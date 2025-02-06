@@ -59,7 +59,7 @@ productShowcaseState.subscribe((state) => {
 let autoScrollTimer;
 
 // Draggable Gestures
-let isDragging = false,let isVertical = false, startX = 0, startY = 0, deltaX = 0, deltaY = 0, isHorizontal = null;
+let isDragging = false, verticalDetected = false, startX = 0, startY = 0, deltaX = 0, deltaY = 0, isHorizontal = null;
 let isTouch = false; // To differentiate between touch and mouse events
 const threshold = Math.min(150, window.innerWidth * 0.2); // 20% of screen width, max 150px
 
@@ -134,7 +134,7 @@ function handleTouchStart(e) {
 
     isDragging = true;
     isHorizontal = null;
-    isVertical = false;
+    verticalDetected = false;
     deltaX = 0;
     deltaY = 0;
     wrapper.style.transition = "none";
@@ -171,8 +171,8 @@ function handleTouchMove(e) {
         // If locked as vertical, allow normal scrolling
         isDragging = false;
         swipeContainer.classList.remove("dragging");
-        if(!isVertical)wrapper.style.transform = `translateX(calc(${-activeIndex * 100}%))`;
-        isVertical = true;
+        if(!verticalDetected)wrapper.style.transform = `translateX(calc(${-activeIndex * 100}%))`;
+        verticalDetected = true;
         return;
     }
 
@@ -194,7 +194,7 @@ function handleTouchEnd(e) {
     if (!isDragging || isHorizontal === false) return;
     isDragging = false;
     isHorizontal = false;
-    isVertical = false;
+    verticalDetected = false;
 
     wrapper.style.transition = "transform 0.3s ease-out";
 
