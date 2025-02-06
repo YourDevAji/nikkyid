@@ -59,7 +59,7 @@ productShowcaseState.subscribe((state) => {
 let autoScrollTimer;
 
 // Draggable Gestures
-let isDragging = false, startX = 0, startY = 0, deltaX = 0, deltaY = 0, isHorizontal = false;
+let isDragging = false, startX = 0, startY = 0, deltaX = 0, deltaY = 0, isHorizontal = null;
 let isTouch = false; // To differentiate between touch and mouse events
 const threshold = Math.min(150, window.innerWidth * 0.2); // 20% of screen width, max 150px
 
@@ -133,7 +133,7 @@ function handleTouchStart(e) {
     }
 
     isDragging = true;
-    isHorizontal = false;
+    isHorizontal = null;
     deltaX = 0;
     deltaY = 0;
     wrapper.style.transition = "none";
@@ -166,13 +166,27 @@ function handleTouchMove(e) {
     //        return;
     //    }
 
-    // Determine swipe direction (horizontal or vertical)
-    if (!isHorizontal && Math.abs(deltaX) > Math.abs(deltaY)) {
-        isHorizontal = true;  // Lock to horizontal swipe
+//    // Determine swipe direction (horizontal or vertical)
+//    if (!isHorizontal && Math.abs(deltaX) > Math.abs(deltaY)) {
+//        isHorizontal = true;  // Lock to horizontal swipe
+//    }
+//    if (!isHorizontal && Math.abs(deltaY) > Math.abs(deltaX)) {
+//        // If vertical swipe is detected, cancel dragging
+//        isDragging = false;   // Stop the dragging state
+//        swipeContainer.classList.remove("dragging");
+//        return;
+//    }
+
+    // Lock swipe direction after slight movement (threshold of 10px)
+    if (isHorizontal === null) {
+        if (Math.abs(deltaX) > 10 || Math.abs(deltaY) > 10) {
+            isHorizontal = Math.abs(deltaX) > Math.abs(deltaY); // Lock direction
+        }
     }
-    if (!isHorizontal && Math.abs(deltaY) > Math.abs(deltaX)) {
-        // If vertical swipe is detected, cancel dragging
-        isDragging = false;   // Stop the dragging state
+
+    if (isHorizontal === false) {
+        // If locked as vertical, allow normal scrolling
+        isDragging = false;
         swipeContainer.classList.remove("dragging");
         return;
     }
@@ -193,7 +207,7 @@ function handleTouchMove(e) {
 // Handle Drag End
 function handleTouchEnd(e) {
     swipeContainer.classList.remove("dragging"); // Re-enable scrolling
-    if (!isDragging) return;
+    if (!isDragging || isHorizontal === false) return;
     isDragging = false;
     isHorizontal = false;
 
