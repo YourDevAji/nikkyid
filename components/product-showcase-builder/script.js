@@ -59,7 +59,7 @@ productShowcaseState.subscribe((state) => {
 let autoScrollTimer;
 
 // Draggable Gestures
-let isDragging = false, startX = 0, startY = 0, deltaX = 0, deltaY = 0, isHorizontal = null;
+let isDragging = false,let isVertical = false, startX = 0, startY = 0, deltaX = 0, deltaY = 0, isHorizontal = null;
 let isTouch = false; // To differentiate between touch and mouse events
 const threshold = Math.min(150, window.innerWidth * 0.2); // 20% of screen width, max 150px
 
@@ -134,6 +134,7 @@ function handleTouchStart(e) {
 
     isDragging = true;
     isHorizontal = null;
+    isVertical = false;
     deltaX = 0;
     deltaY = 0;
     wrapper.style.transition = "none";
@@ -143,6 +144,8 @@ function handleTouchStart(e) {
 function handleTouchMove(e) {
 
     if (!isDragging && e.type === "mousemove") return;
+
+    let activeIndex = productShowcaseState.value.products.findIndex(p => p.active);
 
     let currentX, currentY;
     if (isTouch) {
@@ -157,26 +160,6 @@ function handleTouchMove(e) {
     deltaY = currentY - startY;
 
 
-    //    if (!isHorizontal) {
-    //        isHorizontal = Math.abs(deltaX) > Math.abs(deltaY);
-    //    }
-    //
-    //    // If the gesture is vertical, ignore horizontal swiping
-    //    if (!isHorizontal) {
-    //        return;
-    //    }
-
-//    // Determine swipe direction (horizontal or vertical)
-//    if (!isHorizontal && Math.abs(deltaX) > Math.abs(deltaY)) {
-//        isHorizontal = true;  // Lock to horizontal swipe
-//    }
-//    if (!isHorizontal && Math.abs(deltaY) > Math.abs(deltaX)) {
-//        // If vertical swipe is detected, cancel dragging
-//        isDragging = false;   // Stop the dragging state
-//        swipeContainer.classList.remove("dragging");
-//        return;
-//    }
-
     // Lock swipe direction after slight movement (threshold of 10px)
     if (isHorizontal === null) {
         if (Math.abs(deltaX) > 10 || Math.abs(deltaY) > 10) {
@@ -188,6 +171,8 @@ function handleTouchMove(e) {
         // If locked as vertical, allow normal scrolling
         isDragging = false;
         swipeContainer.classList.remove("dragging");
+        if(!isVertical)wrapper.style.transform = `translateX(calc(${-activeIndex * 100}%))`;
+        isVertical = true;
         return;
     }
 
@@ -196,7 +181,6 @@ function handleTouchMove(e) {
     }
 
     // Slow down overscroll at edges
-    let activeIndex = productShowcaseState.value.products.findIndex(p => p.active);
     if ((activeIndex === 0 && deltaX > 0) || (activeIndex === slides.length - 1 && deltaX < 0)) {
         deltaX *= 0.3; // Reduce movement
     }
@@ -210,6 +194,7 @@ function handleTouchEnd(e) {
     if (!isDragging || isHorizontal === false) return;
     isDragging = false;
     isHorizontal = false;
+    isVertical = false;
 
     wrapper.style.transition = "transform 0.3s ease-out";
 
