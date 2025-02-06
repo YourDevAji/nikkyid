@@ -5,12 +5,24 @@
     position: relative;
     overflow: hidden;
     margin-bottom: 1000px;
+    touch-action: pan-y; /* Allow vertical scrolling by default */
+}
+
+.swiper-container.dragging {
+    touch-action: none; /* Disable all touch actions while dragging */
 }
 
 .swiper-wrapper {
     display: flex;
     width: 100%;
+    cursor: grab;
+    user-select: none;
     transition: transform 0.5s ease-in-out;
+}
+
+.swiper-wrapper:active {
+    cursor: grabbing;
+    pointer-events: all;
 }
 
 .swiper-slide {

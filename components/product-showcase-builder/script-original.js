@@ -37,15 +37,15 @@ productShowcaseState.subscribe((state) => {
 
 
 
+
 await onCreate(productShowcaseState.value);
 
 let autoScrollTimer;
 const autoScrollInterval = 5000; // Auto-scroll interval in milliseconds
 
 // Draggable Gestures
-let isDragging = false, startX = 0, startY = 0, deltaX = 0, deltaY = 0, isHorizontal = false;
-let isTouch = false; // To differentiate between touch and mouse events
-const threshold = Math.min(150, window.innerWidth * 0.2); // 20% of screen width, max 150px
+let touchStartX = 0, touchMoveX = 0, isDragging = false;
+const threshold = Math.min(150, window.innerWidth * 0.4)
 
 const swipeContainer = document.querySelector(".swiper-container");
 const wrapper = document.querySelector(".swiper-wrapper");
@@ -61,9 +61,9 @@ if (!swipeContainer || !wrapper || !slides.length) {
     swipeContainer.addEventListener("touchstart", handleTouchStart);
     swipeContainer.addEventListener("touchmove", handleTouchMove, { passive: false });
     swipeContainer.addEventListener("touchend", handleTouchEnd);
-    //    window.addEventListener("mousedown", handleTouchStart);
-    //    window.addEventListener("mousemove", handleTouchMove);
-    //    window.addEventListener("mouseup", handleTouchEnd);
+    swipeContainer.addEventListener("pointerdown", handleTouchStart);
+    swipeContainer.addEventListener("pointermove", handleTouchMove);
+    swipeContainer.addEventListener("pointerup", handleTouchEnd);
 
     nextButton?.addEventListener("click", () => navigateSlide(1));
     prevButton?.addEventListener("click", () => navigateSlide(-1));
@@ -74,7 +74,7 @@ if (!swipeContainer || !wrapper || !slides.length) {
 // Start Auto-Scroll
 function startAutoScroll() {
     stopAutoScroll();
-    //    autoScrollTimer = setInterval(() => navigateSlide(1), autoScrollInterval);
+    autoScrollTimer = setInterval(() => navigateSlide(1), autoScrollInterval);
 }
 
 // Stop Auto-Scroll
@@ -100,84 +100,44 @@ function handleUserInteractionEnd() {
 
 // Handle Drag Start
 function handleTouchStart(e) {
-    stopAutoScroll();
-    swipeContainer.classList.add("dragging"); // Disable scrolling
-
-    if (e.type === "touchstart") {
-        isTouch = true;
-        startX = e.touches[0].clientX;
-        startY = e.touches[0].clientY;
-    } else if (e.type === "mousedown" && e.button === 0) {
-        isTouch = false;
-        startX = e.clientX;
-        startY = e.clientY;
-    } else {
-        return;
-    }
-
+    touchStartX = e.touches?.[0]?.clientX
+    //    || e.clientX
+    ;
     isDragging = true;
-    isHorizontal = false;
-    deltaX = 0;
-    deltaY = 0;
-    wrapper.style.transition = "none";
+    wrapper.style.transition = "none"; // Disable smooth transition
+    stopAutoScroll(); // Pause auto-scroll during drag
 }
 
 // Handle Drag Move
 function handleTouchMove(e) {
-    console.log(e);
     if (!isDragging) return;
+    e.preventDefault(); // Prevent unwanted scrolling
 
-    let currentX, currentY;
-    if (isTouch) {
-        currentX = e.touches[0].clientX;
-        currentY = e.touches[0].clientY;
-    } else {
-        currentX = e.clientX;
-        currentY = e.clientY;
-    }
+    touchMoveX = e.touches?.[0]?.clientX || e.clientX;
+    let deltaX = touchMoveX - touchStartX;
+    const activeIndex = productShowcaseState.value.products.findIndex(p => p.active) || 0;
 
-    deltaX = currentX - startX;
-    deltaY = currentY - startY;
-
-
-    if (!isHorizontal) {
-        isHorizontal = Math.abs(deltaX) > Math.abs(deltaY);
-    }
-
-    // If the gesture is vertical, ignore horizontal swiping
-    if (!isHorizontal) {
-        return;
-    }
-
-    if (isHorizontal && e.cancelable) {
-        e.preventDefault(); // Prevent vertical scroll while swiping
-    }
-
-    // Slow down overscroll at edges
-    let activeIndex = productShowcaseState.value.products.findIndex(p => p.active);
+    // Slow down overscroll at the edges
     if ((activeIndex === 0 && deltaX > 0) || (activeIndex === slides.length - 1 && deltaX < 0)) {
-        deltaX *= 0.3; // Reduce movement
+        deltaX *= 0.3;
     }
 
+    // Apply drag movement
     wrapper.style.transform = `translateX(calc(${-activeIndex * 100}% + ${deltaX}px))`;
 }
 
 // Handle Drag End
 function handleTouchEnd(e) {
-    swipeContainer.classList.remove("dragging"); // Re-enable scrolling
     if (!isDragging) return;
     isDragging = false;
-    isHorizontal = false;
 
-    wrapper.style.transition = "transform 0.3s ease-out";
+    let touchEndX = e.changedTouches?.[0]?.clientX || e.clientX;
+    let deltaX = touchEndX - touchStartX;
+    let activeIndex = productShowcaseState.value.products.findIndex(p => p.active) || 0;
 
+    wrapper.style.transition = "transform 0.3s ease-out"; // Restore transition
 
-    let activeIndex = productShowcaseState.value.products.findIndex(p => p.active);
-    if((activeIndex === 0 && deltaX > 0) || (activeIndex == (slides.length - 1) && deltaX < 0) ){
-        wrapper.style.transform = `translateX(calc(${-activeIndex * 100}%))`;
-        return;
-    }
-
+    // Determine slide navigation based on threshold
     if (Math.abs(deltaX) > threshold) {
         if (deltaX < 0 && activeIndex < slides.length - 1) {
             navigateSlide(1);
@@ -185,10 +145,10 @@ function handleTouchEnd(e) {
             navigateSlide(-1);
         }
     } else {
-        updateSlidePosition();
+        updateSlidePosition(); // Reset to active slide
     }
 
-    startAutoScroll();
+    startAutoScroll(); // Resume auto-scroll
 }
 
 // Update Slide Position
