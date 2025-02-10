@@ -89,6 +89,10 @@
 /* Tab View */
 @media (max-width: 800px){
 
+    .category-container{
+        margin-top: 5vh;
+    }
+
     .category-item{
         flex: 0 0 calc((100% - 96px)/4);
         max-width: calc((100% - 96px)/4);
@@ -100,9 +104,14 @@
 /* Mobile View */
 @media (max-width: 635px) {
 
+    .category-container{
+      align-items: flex-start;
+    }
+
+
     .category-wrapper{
         gap: 16px;
-        margin-top: 16px;
+/*        margin-top: 8px;*/
         padding-left: 12px;
         padding-right: 12px;
         padding-top: 16px;
@@ -117,11 +126,14 @@
     .category-container h1{
         padding-left: 12px;
         padding-right: 12px;
+        text-align: left;
+        font-size: 20px;
     }
 
     .category-container h5{
         padding-left: 12px;
         padding-right: 12px;
+        text-align: left;
     }
 
     .category-item h4{
@@ -132,7 +144,12 @@
         text-overflow: ellipsis;
         max-height: 2.4em;
         line-height: 1.2em; /* Adjust as needed */
+        margin-top:8px;
+        margin-left:8px;
+        margin-right:8px;
+        margin-bottom: 0px;
     }
+
     .category-item h6{
         display: -webkit-box;
         -webkit-line-clamp: 2;
@@ -141,5 +158,6 @@
         text-overflow: ellipsis;
         max-height: 2.4em;
         line-height: 1.2em; /* Adjust as needed */
+        margin: 8px;
     }
 }
