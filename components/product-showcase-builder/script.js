@@ -9,7 +9,7 @@ document.head.appendChild(link);
 
 
 // Initialize HtmlWidget
-const id = "product-showcase-id";
+const id = "product-showcase-builder-id";
 const container = document.getElementById(id);
 const productShowcaseWidget = new HtmlWidget();
 let productShowcaseDOM = null;
@@ -29,7 +29,6 @@ async function onCreate(state) {
 }
 
 
-await onCreate(productShowcaseState.value);
 
 let autoScrolling = productShowcaseState.value.canAutoScrollInterval;
 let autoScrollInterval = productShowcaseState.value.autoScrollInterval; // Auto-scroll interval in milliseconds
@@ -54,6 +53,8 @@ productShowcaseState.subscribe((state) => {
     }
 
 });
+
+await onCreate(productShowcaseState.value);
 
 
 let autoScrollTimer;

@@ -1,0 +1,145 @@
+.category-container{
+    display: flex;
+    margin-top: 8vh;
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    margin-bottom: 100px;
+}
+
+.category-container h1{
+    color: black;
+    margin: 0px;
+    text-align: center;
+    padding-left: 24px;
+    padding-right: 24px;
+}
+.category-container h5{
+    color: black;
+    margin: 0px;
+    text-align: center;
+    font-weight: normal;
+    padding-left: 24px;
+    padding-right: 24px;
+}
+
+.category-wrapper{
+    display: flex;
+    gap: 16px;
+    width: 100%;
+    box-sizing: border-box;
+    justify-content: flex-start;
+    padding-left: 24px;
+    padding-right: 24px;
+    padding-top: 32px;
+    overflow-x: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #ccc transparent;
+    white-space: nowrap;
+    scroll-snap-type: x mandatory;
+    padding-bottom: 16px;
+}
+
+.category-item{
+    display: flex;
+    flex-direction: column;
+    flex: 0 0 250px;
+    max-width: 250px;
+    box-sizing: border-box;
+    overflow: hidden;
+    white-space: pre-wrap;
+    background-color: #F5F5F5;
+    border-radius: 16px;
+}
+
+.category-item img{
+    width: 100%;
+    aspect-ratio: 3/2;
+}
+
+.category-item h4{
+    color:  #505050;
+    margin: 0px;
+    margin-left: 16px;
+    margin-right: 16px;
+    margin-top: 8px;
+}
+
+.category-item h6{
+    color: black;
+    margin: 0px;
+    font-weight: normal;
+    margin-left: 16px;
+    margin-right: 16px;
+    margin-top: 4px;
+    margin-bottom: 16px;
+}
+
+.category-wrapper::-webkit-scrollbar {
+    height: 6px;
+}
+.category-wrapper::-webkit-scrollbar-thumb {
+    background: #aaa;
+    border-radius: 3px;
+}
+
+
+/* Tab View */
+@media (max-width: 800px){
+
+    .category-item{
+        flex: 0 0 calc((100% - 96px)/4);
+        max-width: calc((100% - 96px)/4);
+    }
+
+}
+
+
+/* Mobile View */
+@media (max-width: 635px) {
+
+    .category-wrapper{
+        gap: 16px;
+        margin-top: 16px;
+        padding-left: 12px;
+        padding-right: 12px;
+        padding-top: 16px;
+        padding-bottom: 16px;
+    }
+
+    .category-item{
+        flex: 0 0 calc((100% - 36px)/2);
+        max-width: calc((100% - 36px)/2);
+    }
+
+    .category-container h1{
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+
+    .category-container h5{
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+
+    .category-item h4{
+        display: -webkit-box;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-height: 2.4em;
+        line-height: 1.2em; /* Adjust as needed */
+    }
+    .category-item h6{
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-height: 2.4em;
+        line-height: 1.2em; /* Adjust as needed */
+    }
+}

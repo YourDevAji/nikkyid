@@ -1,0 +1,19 @@
+{{#if categories.length > 2}}
+<div class="category-container">
+
+    <h1>{{title}}</h1>
+    <h5>{{description}}</h5>
+
+    <div class="category-wrapper">
+
+        {{#categories}}
+        <div class="category-item">
+            <img alt="{{altText}}" loading="lazy" src="{{imageUrl}}">
+            <h4>{{identity}}</h4>
+            <h6>{{description}}</h6>
+        </div>
+        {{/categories}}
+
+    </div>
+</div>
+{{/if}}
