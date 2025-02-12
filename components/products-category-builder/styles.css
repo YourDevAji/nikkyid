@@ -14,6 +14,7 @@
 .product-container {
     display: flex;
     gap: 8px;
+    padding-right: 8px;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
 }
@@ -25,6 +26,7 @@
     background: #fff;
     border: 1px solid #ddd;
     border-radius: 10px;
+    box-sizing: border-box;
     padding: 10px;
     scroll-snap-align: center;
 }
@@ -34,7 +36,7 @@
 }
 
 .product-item:last-child{
-    margin-right: 24px;
+    margin-right: 12px;
 }
 
 .product-item img {
