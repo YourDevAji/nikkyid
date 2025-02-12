@@ -10,7 +10,10 @@ const storeCategoryState = new HtmlState(
                 index: 0,
                 imageUrl: "/images/slide4.webp",
                 altText:"image1",
-                link: ""
+                link: "",
+                products: [
+
+                ]
             },
             {
                 identity:"Drinks",
@@ -18,7 +21,10 @@ const storeCategoryState = new HtmlState(
                 index: 1,
                 imageUrl: "/images/slide2.webp",
                 altText:"image2",
-                link: ""
+                link: "",
+                products: [
+
+                ]
             },
             {
                 identity:"Fabrics",
@@ -26,7 +32,10 @@ const storeCategoryState = new HtmlState(
                 index: 2,
                 imageUrl: "/images/slide301.webp",
                 altText:"image3",
-                link: ""
+                link: "",
+                products: [
+
+                ]
             },
             {
                 identity:"Dry Grains",
@@ -34,7 +43,10 @@ const storeCategoryState = new HtmlState(
                 index: 3,
                 imageUrl: "/images/slide4.webp",
                 altText:"image4",
-                link: ""
+                link: "",
+                products: [
+
+                ]
             },
             {
                 identity:"Cleaning",
@@ -42,7 +54,10 @@ const storeCategoryState = new HtmlState(
                 index: 4,
                 imageUrl: "/images/slide2.webp",
                 altText:"image5",
-                link: ""
+                link: "",
+                products: [
+
+                ]
             },
             {
                 identity:"Test",
@@ -50,14 +65,20 @@ const storeCategoryState = new HtmlState(
                 index: 5,
                 imageUrl: "/images/slide301.webp",
                 altText:"image6",
-                link: ""
+                link: "",
+                products: [
+
+                ]
             },{
                 identity:"Drinks",
                 description:"Testing description in drinks",
                 index: 1,
                 imageUrl: "/images/slide2.webp",
                 altText:"image2",
-                link: ""
+                link: "",
+                products: [
+
+                ]
             },
             {
                 identity:"Fabrics",
@@ -65,7 +86,10 @@ const storeCategoryState = new HtmlState(
                 index: 2,
                 imageUrl: "/images/slide301.webp",
                 altText:"image3",
-                link: ""
+                link: "",
+                products: [
+
+                ]
             },
             {
                 identity:"Dry Grains",
@@ -73,7 +97,10 @@ const storeCategoryState = new HtmlState(
                 index: 3,
                 imageUrl: "/images/slide4.webp",
                 altText:"image4",
-                link: ""
+                link: "",
+                products: [
+
+                ]
             },
             {
                 identity:"Cleaning",
@@ -81,7 +108,10 @@ const storeCategoryState = new HtmlState(
                 index: 4,
                 imageUrl: "/images/slide2.webp",
                 altText:"image5",
-                link: ""
+                link: "",
+                products: [
+
+                ]
             },
             {
                 identity:"Test",
@@ -89,7 +119,10 @@ const storeCategoryState = new HtmlState(
                 index: 5,
                 imageUrl: "/images/slide301.webp",
                 altText:"image6",
-                link: ""
+                link: "",
+                products: [
+
+                ]
             },
         ]
     },
