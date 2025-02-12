@@ -43,7 +43,7 @@ let scrollPosition = 0;
 
 setInterval(() => {
     const items = document.querySelectorAll(".product-item");
-    const itemWidth = items[0].offsetWidth + 16; // Including gap
+    const itemWidth = items[0].offsetWidth + 8; // Including gap
     scrollPosition += itemWidth;
 
     if (scrollPosition >= productContainer.scrollWidth) {

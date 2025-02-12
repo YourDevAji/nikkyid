@@ -14,7 +14,8 @@
 .product-container {
     display: flex;
     gap: 8px;
-    padding-right: 8px;
+    padding-right: 12px;
+    padding-left: 12px;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
 }
@@ -31,13 +32,6 @@
     scroll-snap-align: center;
 }
 
-.product-item:first-child{
-    margin-left: 12px;
-}
-
-.product-item:last-child{
-    margin-right: 12px;
-}
 
 .product-item img {
     width: 100%;
