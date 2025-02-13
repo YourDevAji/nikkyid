@@ -38,23 +38,26 @@ productsCategoryState.subscribe((state) => {
 
 await onCreate(productsCategoryState.value);
 
-const productContainer = document.querySelector(".product-container");
-let scrollPosition = 0;
+const productContainers = document.querySelectorAll(".product-container");
 
-setInterval(() => {
-    const items = document.querySelectorAll(".product-item");
-    const itemWidth = items[0].offsetWidth + 8; // Including gap
-    scrollPosition += itemWidth;
+productContainers.forEach((productContainer)=>{
+    let scrollPosition = 0;
+    setInterval(() => {
+        const items = document.querySelectorAll(".product-item");
+        const itemWidth = items[0].offsetWidth + 8; // Including gap
+        scrollPosition += itemWidth;
 
-    if (scrollPosition >= productContainer.scrollWidth) {
-        scrollPosition = 0;
-    }
+        if (scrollPosition >= productContainer.scrollWidth) {
+            scrollPosition = 0;
+        }
 
-    productContainer.scrollTo({
-        left: scrollPosition,
-        behavior: "smooth",
-    });
-}, 3000);
+        productContainer.scrollTo({
+            left: scrollPosition,
+            behavior: "smooth",
+        });
+    }, 3000);
+});
+
 
 
 

@@ -34,11 +34,13 @@
     padding-right: 24px;
     padding-top: 32px;
     overflow-x: auto;
-    scrollbar-width: thin;
-    scrollbar-color: #ccc transparent;
     white-space: nowrap;
     scroll-snap-type: x mandatory;
-    padding-bottom: 16px;
+    /*    padding-bottom: 16px;*/
+    scrollbar-width: none;
+}
+.category-wrapper::-webkit-scrollbar {
+    display: none;
 }
 
 .category-item{
@@ -113,7 +115,6 @@
         padding-left: 12px;
         padding-right: 12px;
         padding-top: 16px;
-        padding-bottom: 16px;
     }
 
     .category-item{

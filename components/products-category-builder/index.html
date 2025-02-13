@@ -1,26 +1,29 @@
-{{#collections}}
+<div class="products-category-collection">
 
-{{#if products.length > 2}}
-<div class="product-section">
+    {{#collections}}
+    {{#if products.length > 2}}
+    <div class="product-section">
 
-    <h2 class="section-title">{{identity}}</h2>
-    <div class="product-container">
+        <h1 class="section-title">{{identity}}</h1>
+        <h5 class="section-description">{{description}}</h5>
+        <div class="product-container">
 
-        {{#products}}
-        <div class="product-item">
-            {{#if isNew === true}}
-            <span class="badge">New</span>
-            {{/if}}
-            <img alt="{{altText}}" src="{{image}}">
-            <p>{{name}}</p>
-            <p>{{currency}}{{price}}</p>
-            <button class="cart-button"> {{buttonText}}</button>
+            {{#products}}
+            <div class="product-item">
+                {{#if isNew === true}}
+                <span class="badge">New</span>
+                {{/if}}
+                <img alt="{{altText}}" src="{{image}}">
+                <p>{{name}}</p>
+                <p>{{currency}}{{price}}</p>
+                <button class="cart-button"> {{buttonText}}</button>
+            </div>
+            {{/products}}
         </div>
-        {{/products}}
-    </div>
 
-</div>
-{{/if}}
+    </div>
+    {{/if}}
 
 {{/collections}}
+</div>
 
